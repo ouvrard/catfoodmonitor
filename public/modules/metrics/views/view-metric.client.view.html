@@ -1,0 +1,81 @@
+<section ng-controller="MetricsController" data-ng-init="findOne()">
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+            <div class="row">
+                <div class="col-xs-6">
+                    <!-- Food panel -->
+                    <div class="panel panel-default" ng-controller="foodConsumptionCtrl">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Food consumption</h3>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <span class="badge">{{today}} g</span>
+                                Today:
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge">{{week}} g</span>
+                                Week:
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <!-- Food remains panel -->
+                    <div class="panel panel-default" ng-controller="foodLevelCtrl">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Food container level</h3>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <span class="badge badge-alert">{{now}} g</span>
+                                Now:
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge">{{oneHourAgo}} g</span>
+                                Since 1 hour:
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12" ng-controller="foodConsChartCtrl">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Food consumption</h3>
+                        </div>
+                        <div class="panel-body">
+                            <canvas id="dayFoodConsChart"  height="80px" class="chart chart-bar" data="dayData"
+                                    labels="dayLabels" legend="false" series="series" options="options">
+                            </canvas>
+
+                            <canvas id="weekFoodConsChart"  height="80px" class="chart chart-bar" data="weekData"
+                                    labels="weekLabels" legend="false" series="series" options="options">
+                            </canvas>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12" ng-controller="aDayAgoChart">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Food container level (last 24 hours)</h3>
+                        </div>
+                        <div class="panel-body">
+                            <canvas id="aDayAgoCanvas" height="100px" class="chart chart-line" data="data"
+                                    labels="labels" legend="false" series="series" options="options">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+

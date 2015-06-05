@@ -1,0 +1,17 @@
+<section data-ng-controller="SigfoxmsgsController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Sigfoxmsgs</h1>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="sigfoxmsg in sigfoxmsgs" data-ng-href="#!/sigfoxmsgs/{{sigfoxmsg._id}}" class="list-group-item">
+			<small class="list-group-item-text">
+				Posted on
+				<span data-ng-bind="sigfoxmsg.date | date:'medium'"></span>
+			</small>
+			<h4 class="list-group-item-heading" data-ng-bind="sigfoxmsg.name"></h4>
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!sigfoxmsgs.$resolved || sigfoxmsgs.length">
+    	No Sigfoxmsgs yet, why don't you <a href="/#!/sigfoxmsgs/create">create one</a>?
+    </div>
+</section>
