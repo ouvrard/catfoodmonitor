@@ -43,7 +43,14 @@ angular.element(document).ready(function() {
 	angular.bootstrap(document, [ApplicationConfiguration.applicationModuleName]);
 });
 
-
+// Bug fix : boostrap's carousel doesn't work with angular
+// Disable NgAnimate for with carousel class
+ angular.module(ApplicationConfiguration.applicationModuleName).config(['$animateProvider',
+    function($animateProvider) {
+        $animateProvider.classNameFilter(/animate-/);
+        //$animateProvider.classNameFilter(/prefix-/);
+    }
+ ]);
 
 'use strict';
 
@@ -393,14 +400,18 @@ angular.module('metrics').config(['ChartJsProvider', function (ChartJsProvider) 
 'use strict';
 
 //Setting up route
-angular.module('metrics').config(['$stateProvider',
-	function($stateProvider) {
+angular.module('metrics').config(['$stateProvider', '$urlRouterProvider',
+	function($stateProvider, $urlRouterProvider) {
+
+        // Default route
+        $urlRouterProvider.otherwise('/metrics/5575fd637dccc10b00f52377');
+
 		// Metrics state routing
 		$stateProvider.
-        state('home', {
-            url: '/',
-            templateUrl: 'modules/core/views/home.client.view.html'
-         }).
+        state('viewMetric', {
+            url: '/metrics/:metricId',
+            templateUrl: 'modules/metrics/views/view-metric.client.view.html'
+        }).
 		state('listMetrics', {
 			url: '/metrics',
 			templateUrl: 'modules/metrics/views/list-metrics.client.view.html'
@@ -409,11 +420,7 @@ angular.module('metrics').config(['$stateProvider',
 			url: '/metrics/create',
 			templateUrl: 'modules/metrics/views/create-metric.client.view.html'
 		}).
-		state('viewMetric', {
-			url: '/metrics/:metricId',
-			templateUrl: 'modules/metrics/views/view-metric.client.view.html'
-		}).
-		state('editMetric', {
+        state('editMetric', {
 			url: '/metrics/:metricId/edit',
 			templateUrl: 'modules/metrics/views/edit-metric.client.view.html'
 		});
@@ -485,12 +492,7 @@ metricsModule.controller('MetricsController', ['$scope', '$stateParams', '$locat
             $scope.dayData = [];
 
             $scope.metric = Metrics.get({metricId: $stateParams.metricId});
-/*
-            var today = new Date(date.valueOf() + date.getTimezoneOffset() * 60000);
-            console.log(today);
 
-            today = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-*/
             $scope.metric.$promise.then(function() {
                 var now = moment().utc();
                 var yesterday = moment().utc().subtract(1, 'day');
@@ -502,11 +504,7 @@ metricsModule.controller('MetricsController', ['$scope', '$stateParams', '$locat
                 $scope.lastDay = yesterday.day();
                 $scope.TZOffset = moment().utcOffset()/60;
 
-                console.log($scope);
-                console.log(moment().utcOffset());
-
                 // Weekly food consumption chart
-                //$scope.daysOfTheWeek = ['Mon', 'Thue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
                 $scope.daysOfTheWeek = ['D', 'L', 'M', 'Me', 'J', 'V', 'S'];
                 $scope.weekLabels = [];
                 $scope.weekData = [[]];
@@ -533,11 +531,11 @@ metricsModule.controller('MetricsController', ['$scope', '$stateParams', '$locat
                 for(i=0; i<24; i++)
                 {
                     // Find current food container level
-                    if(typeof $scope.metric.dailyMetrics[i] != 'undefined'){
-                        if($scope.metric.dailyMetrics[i]._id == $scope.hourAgo)
+                    if(typeof $scope.metric.dailyMetrics[i] !== 'undefined'){
+                        if($scope.metric.dailyMetrics[i]._id === $scope.hourAgo)
                             $scope.oneHourAgo =  Math.round($scope.metric.dailyMetrics[i].load);
 
-                        if($scope.metric.dailyMetrics[i]._id == $scope.hour)
+                        if($scope.metric.dailyMetrics[i]._id === $scope.hour)
                             $scope.now = Math.round($scope.metric.dailyMetrics[i].load);
                     }
 
@@ -583,7 +581,7 @@ metricsModule.controller('MetricsController', ['$scope', '$stateParams', '$locat
                     if(typeof $scope.oneHourAgo !== 'undefined')
                         $scope.oneHourAgo = $scope.now - $scope.oneHourAgo;
                     else
-                        $scope.oneHourAgo = "n/a";
+                        $scope.oneHourAgo = 'n/a';
                 } else{
                     $scope.now = 'n/a';
                     $scope.oneHourAgo ='n/a';
@@ -1002,10 +1000,10 @@ angular.module('users').config(['$stateProvider',
 			url: '/settings/accounts',
 			templateUrl: 'modules/users/views/settings/social-accounts.client.view.html'
 		}).
-		state('signup', {
+		/*state('signup', {
 			url: '/signup',
 			templateUrl: 'modules/users/views/authentication/signup.client.view.html'
-		}).
+		}).*/
 		state('signin', {
 			url: '/signin',
 			templateUrl: 'modules/users/views/authentication/signin.client.view.html'

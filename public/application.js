@@ -18,3 +18,12 @@ angular.element(document).ready(function() {
 	//Then init the app
 	angular.bootstrap(document, [ApplicationConfiguration.applicationModuleName]);
 });
+
+// Bug fix : boostrap's carousel doesn't work with angular
+// Disable NgAnimate for with carousel class
+ angular.module(ApplicationConfiguration.applicationModuleName).config(['$animateProvider',
+    function($animateProvider) {
+        $animateProvider.classNameFilter(/animate-/);
+        //$animateProvider.classNameFilter(/prefix-/);
+    }
+ ]);

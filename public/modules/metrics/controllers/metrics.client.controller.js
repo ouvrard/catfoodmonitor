@@ -63,12 +63,7 @@ metricsModule.controller('MetricsController', ['$scope', '$stateParams', '$locat
             $scope.dayData = [];
 
             $scope.metric = Metrics.get({metricId: $stateParams.metricId});
-/*
-            var today = new Date(date.valueOf() + date.getTimezoneOffset() * 60000);
-            console.log(today);
 
-            today = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-*/
             $scope.metric.$promise.then(function() {
                 var now = moment().utc();
                 var yesterday = moment().utc().subtract(1, 'day');
@@ -80,11 +75,7 @@ metricsModule.controller('MetricsController', ['$scope', '$stateParams', '$locat
                 $scope.lastDay = yesterday.day();
                 $scope.TZOffset = moment().utcOffset()/60;
 
-                console.log($scope);
-                console.log(moment().utcOffset());
-
                 // Weekly food consumption chart
-                //$scope.daysOfTheWeek = ['Mon', 'Thue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
                 $scope.daysOfTheWeek = ['D', 'L', 'M', 'Me', 'J', 'V', 'S'];
                 $scope.weekLabels = [];
                 $scope.weekData = [[]];
@@ -111,11 +102,11 @@ metricsModule.controller('MetricsController', ['$scope', '$stateParams', '$locat
                 for(i=0; i<24; i++)
                 {
                     // Find current food container level
-                    if(typeof $scope.metric.dailyMetrics[i] != 'undefined'){
-                        if($scope.metric.dailyMetrics[i]._id == $scope.hourAgo)
+                    if(typeof $scope.metric.dailyMetrics[i] !== 'undefined'){
+                        if($scope.metric.dailyMetrics[i]._id === $scope.hourAgo)
                             $scope.oneHourAgo =  Math.round($scope.metric.dailyMetrics[i].load);
 
-                        if($scope.metric.dailyMetrics[i]._id == $scope.hour)
+                        if($scope.metric.dailyMetrics[i]._id === $scope.hour)
                             $scope.now = Math.round($scope.metric.dailyMetrics[i].load);
                     }
 
@@ -161,7 +152,7 @@ metricsModule.controller('MetricsController', ['$scope', '$stateParams', '$locat
                     if(typeof $scope.oneHourAgo !== 'undefined')
                         $scope.oneHourAgo = $scope.now - $scope.oneHourAgo;
                     else
-                        $scope.oneHourAgo = "n/a";
+                        $scope.oneHourAgo = 'n/a';
                 } else{
                     $scope.now = 'n/a';
                     $scope.oneHourAgo ='n/a';

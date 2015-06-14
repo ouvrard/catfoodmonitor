@@ -23,10 +23,11 @@ module.exports = function(app) {
 	app.route('/auth/reset/:token').post(users.reset);
 
 	// Setting up the users authentication api
-	app.route('/auth/signup').post(users.signup);
+	//app.route('/auth/signup').post(users.signup);
 	app.route('/auth/signin').post(users.signin);
 	app.route('/auth/signout').get(users.signout);
 
+    /* Disable auth routes
 	// Setting the facebook oauth routes
 	app.route('/auth/facebook').get(passport.authenticate('facebook', {
 		scope: ['email']
@@ -53,6 +54,7 @@ module.exports = function(app) {
 	// Setting the github oauth routes
 	app.route('/auth/github').get(passport.authenticate('github'));
 	app.route('/auth/github/callback').get(users.oauthCallback('github'));
+    */
 
 	// Finish by binding the user middleware
 	app.param('userId', users.userByID);
