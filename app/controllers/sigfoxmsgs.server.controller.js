@@ -188,7 +188,7 @@ exports.getDailyMetrics = function(req, res, next) {
         { $sort: { date: -1}},
         { $group : {
             _id: { $hour: '$date' },
-            load  : { $max : '$slot_Load'},
+            load  : { $last : '$slot_Load'},
             delta : { $sum : '$delta'}
         }},
         {$sort: {_id:1}}
