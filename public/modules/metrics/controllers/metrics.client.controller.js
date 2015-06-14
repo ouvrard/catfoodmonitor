@@ -216,7 +216,7 @@ metricsModule.controller('foodLevelCtrl', ['$scope',
 
 metricsModule.controller('slidesCtrl', ['$scope',
     function ($scope) {
-        $scope.interval = false;
+        $scope.interval = 0;
         $scope.pause = true;
         $scope.slides = [
             {

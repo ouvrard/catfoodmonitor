@@ -43,14 +43,7 @@ angular.element(document).ready(function() {
 	angular.bootstrap(document, [ApplicationConfiguration.applicationModuleName]);
 });
 
-// Bug fix : boostrap's carousel doesn't work with angular
-// Disable NgAnimate for with carousel class
- angular.module(ApplicationConfiguration.applicationModuleName).config(['$animateProvider',
-    function($animateProvider) {
-        $animateProvider.classNameFilter(/animate-/);
-        //$animateProvider.classNameFilter(/prefix-/);
-    }
- ]);
+
 
 'use strict';
 
@@ -645,7 +638,7 @@ metricsModule.controller('foodLevelCtrl', ['$scope',
 
 metricsModule.controller('slidesCtrl', ['$scope',
     function ($scope) {
-        $scope.interval = false;
+        $scope.interval = 0;
         $scope.pause = true;
         $scope.slides = [
             {
@@ -737,6 +730,7 @@ angular.module('metrics').factory('Metrics', ['$resource',
 		});
 	}
 ]);
+
 'use strict';
 
 //Setting up route
