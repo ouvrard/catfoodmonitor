@@ -7,17 +7,23 @@ module.exports = {
 			css: [
 				'public/lib/bootstrap/dist/css/bootstrap.min.css',
 				'public/lib/bootstrap/dist/css/bootstrap-theme.min.css',
+                '//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'
 			],
 			js: [
-				'public/lib/angular/angular.min.js',
-				'public/lib/angular-resource/angular-resource.js', 
-				'public/lib/angular-cookies/angular-cookies.js', 
-				'public/lib/angular-animate/angular-animate.js', 
-				'public/lib/angular-touch/angular-touch.js', 
-				'public/lib/angular-sanitize/angular-sanitize.js', 
-				'public/lib/angular-ui-router/release/angular-ui-router.min.js',
-				'public/lib/angular-ui-utils/ui-utils.min.js',
-				'public/lib/angular-bootstrap/ui-bootstrap-tpls.min.js'
+                'public/lib/angular/angular.js',
+                'public/lib/angular-resource/angular-resource.js',
+                'public/lib/angular-cookies/angular-cookies.js',
+                'public/lib/angular-animate/angular-animate.js',
+                'public/lib/angular-touch/angular-touch.js',
+                'public/lib/angular-sanitize/angular-sanitize.js',
+                'public/lib/angular-ui-router/release/angular-ui-router.js',
+                'public/lib/angular-ui-utils/ui-utils.js',
+                'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
+                'public/lib/Chart.js/Chart.min.js',
+                'public/lib/angular-chart.js/angular-chart.js',
+                'public/lib/bower-skrollr/skrollr.js',
+                'public/lib/angular-skrollr/dist/angular-skrollr.min.js',
+                'public/lib/moment/min/moment.min.js'
 			]
 		},
 		css: 'public/dist/application.min.css',

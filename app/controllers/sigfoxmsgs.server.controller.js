@@ -6,7 +6,8 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Sigfoxmsg = mongoose.model('Sigfoxmsg'),
-	_ = require('lodash');
+	_ = require('lodash'),
+    moment = require('moment');
 
 /**
  * Create a Sigfoxmsg
@@ -86,7 +87,7 @@ exports.list = function(req, res) {
 /**
  * Sigfoxmsg middleware
  */
-exports.sigfoxmsgByID = function(req, res, next, id) { 
+exports.sigfoxmsgByID = function(req, res, next, id) {
 	Sigfoxmsg.findById(id).populate('user', 'displayName').exec(function(err, sigfoxmsg) {
 		if (err) return next(err);
 		if (! sigfoxmsg) return next(new Error('Failed to load Sigfoxmsg ' + id));
@@ -121,18 +122,21 @@ exports.requiresLogin = function(req, res, next) {
  */
 exports.storeMsg = function(req, res, next) {
     var sigfoxmsg = new Sigfoxmsg(req.body);
+
     // Get parameters from middlewares
     sigfoxmsg.device = req.sigfoxdevice;
     sigfoxmsg.delta = req.delta;
 
     // Convert Unix TS to JavaScript TS
-    sigfoxmsg.time *= 1000;
+    if(sigfoxmsg.time)
+        sigfoxmsg.time *= 1000;
 
     // Clear body
     req.body = {};
 
     sigfoxmsg.save(function(err) {
         if (err) {
+            console.log(err);
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
             });
@@ -156,7 +160,10 @@ exports.calculateDelta = function(req, res, next) {
                 message: errorHandler.getErrorMessage(err)
             });
         } else {
-            req.delta = lastMsg.slot_Load - req.body.slot_Load;
+            if(lastMsg)
+                req.delta = lastMsg.slot_Load - req.body.slot_Load;
+            else
+                req.delta = 0;
 
             // Check if a food refill happens
             if(req.delta < 0 )
@@ -172,18 +179,16 @@ exports.calculateDelta = function(req, res, next) {
 
 exports.getDailyMetrics = function(req, res, next) {
     // Today @ 00:00
-    var today = new Date();
-
-    today = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    var aDayAgo = moment().endOf('hour').subtract(1, 'day');
 
     // Get daily data
     Sigfoxmsg.aggregate([
         // Match the date range
-        { $match: { date: { $lte: today} } },
+        { $match: { date: { $gte: aDayAgo._d} } },
         { $sort: { date: -1}},
         { $group : {
             _id: { $hour: '$date' },
-            load  : { $avg : '$slot_Load'},
+            load  : { $max : '$slot_Load'},
             delta : { $sum : '$delta'}
         }},
         {$sort: {_id:1}}
@@ -203,17 +208,13 @@ exports.getDailyMetrics = function(req, res, next) {
  * Middleware: Calculate weekly metrics
  */
 exports.getWeeklyMetrics = function(req, res, next) {
-    // Today @ 00:00
-    var today = new Date();
-    today = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-
     // 7 days ago
-    var sevenDaysAgo = new Date(today - (7 * 24 * 60 * 60 * 1000));
+    var sevenDaysAgo = moment().endOf('day').subtract(7, 'day');
 
     // Get weekly data
     Sigfoxmsg.aggregate([
         // Match the date range
-        { $match: { date: { $gte: sevenDaysAgo} } },
+        { $match: { date: { $gte: sevenDaysAgo._d} } },
         { $sort: { date: -1}},
         { $group: {
             _id: { $dayOfWeek: '$date' },
