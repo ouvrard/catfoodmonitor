@@ -236,35 +236,35 @@ metricsModule.controller('slidesCtrl', ['$scope',
             },{
                 image: '/modules/metrics/img/story/06.jpg',
                 caption:'',
-                desc:'Un simple désoudage et on les rallongent pour les faire sortir.'
+                desc:'On désoude les fils du capteur et on les rallonge pour les faire sortir.'
             },{
                 image: '/modules/metrics/img/story/07.jpg',
                 caption:'',
-                desc:'Il est désormais possible de raccorder le capteur à la carte Arduino.'
+                desc:'On peut maintenant raccorder le capteur à la carte Arduino.'
             },{
                 image: '/modules/metrics/img/story/08.jpg',
                 caption:'Le montage életronique',
-                desc:'Le signal du capteur de force dans la balance est trop faible pour être détécté. Le rôle du circuit imprimmé est amplifier le signal.'
+                desc:'Le signal du capteur de force dans la balance est trop faible pour être détécté. Le rôle du circuit imprimmé est d\'amplifier le signal.'
             },{
                 image: '/modules/metrics/img/story/09.jpg',
                 caption:'',
-                desc:'Le montage fini...'
+                desc:'Voici le montage fini...'
             },{
                 image: '/modules/metrics/img/story/10.jpg',
                 caption:'',
-                desc:'Après calibration au potentiomètre, la résistance de gain pour l\'amplificateur doit être d\'environ 50 Ohms. ... Ce qui explique les 5 résitances de 10 Ohms en série !'
+                desc:'Après calibration au potentiomètre, la résistance de gain pour l\'amplificateur doit être d\'environ 50 Ohms... Ce qui explique les 5 résitances de 10 Ohms en série !'
             },{
                 image: '/modules/metrics/img/story/11.jpg',
                 caption:'',
-                desc:'Les cartes Akeru sont des Arduino avec un modem radio UNB pour émettre sur les fréquences utilisée par SigFox. Il faut simplement charger la bibliothèque Akeru pour faire fonctionner le modem.'
+                desc:'Les cartes Akeru sont des Arduino avec un modem radio UNB pour émettre sur les fréquences utilisées par SigFox (868 mHz). Il faut simplement charger la bibliothèque Akeru pour faire fonctionner le modem.'
             },{
                 image: '/modules/metrics/img/story/12.jpg',
                 caption:'',
-                desc:'A la mise sous tension, le programme fait la tare du récipent pour ne peser que sont contenu. Ensuite, toutes les 15 minutes, la masse est envoyée sur le réseaux Sigfox.'
+                desc:'A la mise sous tension, le programme fait la tare du récipent pour ne peser que son contenu. Ensuite, toutes les 15 minutes, la masse est envoyée sur le réseaux Sigfox.'
             },{
                 image: '/modules/metrics/img/story/13.jpg',
                 caption:'Transit sur le réseau Sigfox',
-                desc:'Le message émit par la carte est capté par les antennes de Sigfox, puis transféré sur le serveur de l\'application'
+                desc:'Le message émis par la carte est capté par les antennes de Sigfox, puis transféré sur le serveur de l\'application'
             },{
                 image: '/modules/metrics/img/story/14.jpg',
                 caption:'Application',
