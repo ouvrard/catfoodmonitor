@@ -179,7 +179,7 @@ exports.calculateDelta = function(req, res, next) {
 
 exports.getDailyMetrics = function(req, res, next) {
     // Today @ 00:00
-    var aDayAgo = moment().endOf('hour').subtract(1, 'day');
+    var aDayAgo = moment().add(1, 'hour').startof('hour').subtract(1, 'day');
 
     // Get daily data
     Sigfoxmsg.aggregate([
