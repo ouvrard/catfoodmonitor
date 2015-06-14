@@ -185,13 +185,15 @@ exports.getDailyMetrics = function(req, res, next) {
     Sigfoxmsg.aggregate([
         // Match the date range
         { $match: { date: { $gte: aDayAgo._d} } },
-        { $sort: { date: -1}},
+
         { $group : {
             _id: { $hour: '$date' },
             load  : { $last : '$slot_Load'},
             delta : { $sum : '$delta'}
         }},
-        {$sort: {_id:1}}
+        { $sort: { date: -1}}
+        /*,
+        {$sort: {_id:1}}*/
     ]).exec(function(err, data) {
         if (err) {
             return res.status(400).send({
