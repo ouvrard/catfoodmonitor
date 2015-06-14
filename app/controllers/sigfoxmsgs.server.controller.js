@@ -190,8 +190,8 @@ exports.getDailyMetrics = function(req, res, next) {
             _id: { $hour: '$date' },
             load  : { $last : '$slot_Load'},
             delta : { $sum : '$delta'}
-        }},
-        {$sort: {_id:1}}
+        }}/*,
+        {$sort: {_id:1}}*/
     ]).exec(function(err, data) {
         if (err) {
             return res.status(400).send({
