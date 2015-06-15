@@ -192,9 +192,7 @@ exports.getDailyMetrics = function(req, res, next) {
             delta : { $sum : '$delta'},
             date : {$last:'$date'}
         }},
-        { $sort: { date: -1}}
-        /*,
-        {$sort: {_id:1}}*/
+        { $sort: { date: 1}}
     ]).exec(function(err, data) {
         if (err) {
             return res.status(400).send({
