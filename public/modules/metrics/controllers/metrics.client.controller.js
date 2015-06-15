@@ -93,72 +93,44 @@ metricsModule.controller('MetricsController', ['$scope', '$stateParams', '$locat
                 $scope.week = 0;
 
                 // Iterators vars
-                var i, j, n, m;
+                var i, j, n;
 
-                var iH,iH2;
-                var utc;
-                var id;
+                var len = $scope.metric.dailyMetrics.length;
+                var m, iUTC;
                 // Today
-                for(i=0; i<24; i++)
+                for(i=0; i<len; i++)
                 {
-                    // Find current food container level
-                    if(typeof $scope.metric.dailyMetrics[i] !== 'undefined'){
-                        if($scope.metric.dailyMetrics[i]._id === $scope.hourAgo)
-                            $scope.oneHourAgo =  Math.round($scope.metric.dailyMetrics[i].load);
-
-                        if($scope.metric.dailyMetrics[i]._id === $scope.hour)
-                            $scope.now = Math.round($scope.metric.dailyMetrics[i].load);
-                    }
-
-                    // Label of the level history chart
-                    iH = (i+$scope.hour+$scope.TZOffset+1)%24;
-                    // Index of level history chart in raw data
-                    iH2 = (24+iH-$scope.TZOffset)%24;
-                    // Index of the daily food consumption bar chart
-                    utc = (24 + i - $scope.TZOffset)%24;
+                    m = $scope.metric.dailyMetrics[i];
+                    iUTC = (m._id + $scope.TZOffset)%24;
 
                     // Labels for level history chart
-                    if(i%4 === 0 || i === 23)
-                        $scope.labels[i] = ((iH<10)? '0':'') + iH;
+                    if(i%4 === 0 || i === len-1)
+                        $scope.labels[i] = ((iUTC<10)? '0':'') + iUTC;
                     else
                         $scope.labels[i] = '';
 
+                    // Value for level history chart
+                    $scope.data[0][i] = $scope.metric.dailyMetrics[i].load;
+
                     // Initialize value --> Chart display issues
                     $scope.dayData[0][i] = 0;
-                    // Last hour slot in food level history chart must be empty
-                    // µC ticks every 15 min --> Current hour slot can be empty
-                    if(i<23)
-                        $scope.data[0][i] = 0;
 
-
-                    // Loop through the raw data array to fetch records for the hour i
-                    for(j = 0,n=$scope.metric.dailyMetrics.length;j<n;j++) {
-                        id = $scope.metric.dailyMetrics[j]._id;
-
-                        if (id === utc && utc<=$scope.hour) {
-                            // Food consumption
-                            $scope.today += $scope.metric.dailyMetrics[j].delta;
-                            // Food bar chart
-                            $scope.dayData[0][i] = $scope.metric.dailyMetrics[j].delta;
-                        }
-                        if (id === iH2) {
-                            $scope.data[0][i] = $scope.metric.dailyMetrics[j].load;
-                        }
+                    if (m._id <= $scope.hour) {
+                        // Values for the food bar chart
+                        $scope.dayData[0][iUTC] = $scope.metric.dailyMetrics[m._id].delta;
+                        // Sum hourly food consumption
+                        $scope.today += $scope.metric.dailyMetrics[m._id].delta;
                     }
                 }
 
-                // Current food container level
-                if(typeof $scope.now !== 'undefined'){
-                    if(typeof $scope.oneHourAgo !== 'undefined')
-                        $scope.oneHourAgo = $scope.now - $scope.oneHourAgo;
-                    else
-                        $scope.oneHourAgo = 'n/a';
-                } else{
-                    $scope.now = 'n/a';
-                    $scope.oneHourAgo ='n/a';
-                }
-
+                // Round food consumption sum
                 $scope.today = Math.round($scope.today);
+
+                // Current food container level
+                if(len > 1) {
+                    $scope.now = Math.round($scope.metric.dailyMetrics[(len-1)].load);
+                    $scope.oneHourAgo =  Math.round($scope.now - $scope.metric.dailyMetrics[(len-2)].load);
+                }
 
                 // Weekly metrics
                 for(i=0,n=7; i<n; ++i)
