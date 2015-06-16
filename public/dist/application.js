@@ -524,8 +524,6 @@ metricsModule.controller('MetricsController', ['$scope', '$stateParams', '$locat
                 // Iterators vars
                 var i, j, n;
 
-                //console.log($scope);
-
                 var len = $scope.metric.dailyMetrics.length;
                 var m, iUTC;
                 // Today
@@ -546,9 +544,9 @@ metricsModule.controller('MetricsController', ['$scope', '$stateParams', '$locat
                     // Initialize value --> Chart display issues
                     $scope.dayData[0][i] = 0;
 
-                    if (m._id <= $scope.hour) {
+                    if (iUTC <= $scope.hour ){
                         // Values for the food bar chart
-                        $scope.dayData[0][iUTC] = $scope.metric.dailyMetrics[m._id].delta;
+                        $scope.dayData[0][iUTC] = $scope.metric.dailyMetrics[i].delta;
                         // Sum hourly food consumption
                         $scope.today += $scope.metric.dailyMetrics[m._id].delta;
                     }
@@ -587,6 +585,7 @@ metricsModule.controller('MetricsController', ['$scope', '$stateParams', '$locat
                         $scope.week += $scope.metric.weeklyMetrics[i].delta;
                 }
                 $scope.week = Math.round($scope.week);
+                console.log($scope);
             });
         };
 	}
